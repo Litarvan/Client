@@ -144,17 +144,18 @@ function loop(newFiles, count) {
     if (count < newFiles.length) {
         fs.exists(appLogic.appData.getLeagueDirectory() + "/" + newFiles[count].path, function (exist) {
             if (exist) {
-                var oldRealFileHash = md5File(appLogic.appData.getLeagueDirectory() + "/" + newFiles[count].path, (err, hash) => {
-                    if (newFiles[count].md5 != hash) {
+                // var oldRealFileHash = md5File(appLogic.appData.getLeagueDirectory() + "/" + newFiles[count].path, (err, hash) => {
+                fs.stat(appLogic.appData.getLeagueDirectory() + "/" + newFiles[count].path, (err, stats) => {
+                    //if (newFiles[count].md5 != hash) {
+                    if (newFiles[count].size !== stats.size) {
                         neededStuff.push(newFiles[count].path);
-                        console.log("CDN: This file needs update " + newFiles[count].path)
-                        count++;
-                        loop(newFiles, count);
+                        console.log("CDN: This file needs update " + newFiles[count].path);
                     } else {
-                        console.log("CDN: Already have file " + newFiles[count].path)
-                        count++;
-                        loop(newFiles, count);
+                        console.log("CDN: Already have file " + newFiles[count].path);
                     }
+
+                    count++;
+                    loop(newFiles, count);
                 })
             } else {
                 console.log("CDN: New file " + newFiles[count].path)

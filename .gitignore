@@ -51,7 +51,7 @@ PublishUpdate.bat
 publisher.json
 oldFiles.json
 files.json
-.idea/workspace.xml
+.idea/
 
 dist
 dist/win-unpacked/resources/app.asar
